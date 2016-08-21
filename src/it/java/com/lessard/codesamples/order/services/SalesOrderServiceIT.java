@@ -1,17 +1,17 @@
 package com.lessard.codesamples.order.services;
 
 
-import com.lessard.codesamples.order.configurations.PersistenceItTestConfiguration;
-import com.lessard.codesamples.order.configurations.WebMvcItTestConfiguration;
+import com.lessard.codesamples.order.RestSpringBootApplication;
 import com.lessard.codesamples.order.domain.SalesOrder;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -19,8 +19,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-
-@RunWith(SpringJUnit4ClassRunner.class)
+@Ignore
+@Transactional
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = RestSpringBootApplication.class)
 public class SalesOrderServiceIT {
 
     @Autowired

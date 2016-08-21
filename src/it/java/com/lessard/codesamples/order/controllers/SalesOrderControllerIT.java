@@ -1,19 +1,9 @@
 package com.lessard.codesamples.order.controllers;
 
 
-import com.lessard.codesamples.order.configurations.PersistenceItTestConfiguration;
-
-import com.lessard.codesamples.order.configurations.WebMvcItTestConfiguration;
 import io.restassured.http.ContentType;
-import org.eclipse.persistence.internal.libraries.antlr.runtime.EarlyExitException;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -22,16 +12,14 @@ import java.util.Date;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
-import static org.hamcrest.core.IsEqual.*;
 import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.core.IsEqual.equalTo;
 
 
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
-@WebAppConfiguration
-@IntegrationTest()
 public class SalesOrderControllerIT {
+
+    public static final String URL_PREFIX = "http://localhost:8080/RestSpringBootApp/salesorders/";
 
     private Date today = Calendar.getInstance().getTime();
 
@@ -42,17 +30,16 @@ public class SalesOrderControllerIT {
     @Test
     public void testGetSalesOrder() throws Exception {
         when().
-                get("http://localhost:8080/RestSpringMvcDataApp/salesorders/100").
+                get(URL_PREFIX + "100").
                 then().statusCode(200).body("id", equalTo(100)).
                 contentType(ContentType.JSON);
     }
-
 
     @Test
     public void testGetSalesOrderWithNonExistingId() throws Exception {
 
         when().
-                get("http://localhost:8080/RestSpringMvcDataApp/salesorders/1000").
+                get(URL_PREFIX + "1000").
                 then().statusCode(404).
                 contentType(ContentType.JSON);
     }
@@ -61,7 +48,7 @@ public class SalesOrderControllerIT {
     public void testGetSalesOrderWithInvalidId() throws Exception {
 
         when().
-                get("http://localhost:8080/RestSpringMvcDataApp/salesorders/aaaa").
+                get(URL_PREFIX + "aaaa").
                 then().statusCode(404).
                 contentType(ContentType.JSON);
     }
@@ -70,7 +57,7 @@ public class SalesOrderControllerIT {
     public void testGetAllSalesOrder() throws Exception {
 
         when().
-                get("http://localhost:8080/RestSpringMvcDataApp/salesorders").
+                get(URL_PREFIX).
                 then().statusCode(200).body("id", hasItems(100, 200, 300)).
                 contentType(ContentType.JSON);
     }
@@ -84,7 +71,7 @@ public class SalesOrderControllerIT {
         String postStr = "{\"description\":\"SalesOrder IT\", \"date\": " + "\"" + todayStr + "\",\"total\": \"10.00\" }";
 
         given().contentType(ContentType.JSON).body(postStr ).
-            when().post("http://localhost:8080/RestSpringMvcDataApp/salesorders").
+            when().post(URL_PREFIX).
                 then().statusCode(201);
     }
 
@@ -97,7 +84,7 @@ public class SalesOrderControllerIT {
         String postStr = "{\"id\" : \"100\", \"description\":\"SalesOrder IT\", \"date\": " + "\"" + todayStr + "\",\"total\": \"10.00\" }";
 
         given().contentType(ContentType.JSON).body(postStr ).
-                when().post("http://localhost:8080/RestSpringMvcDataApp/salesorders").
+                when().post(URL_PREFIX).
                 then().statusCode(201);
     }
 
@@ -110,7 +97,7 @@ public class SalesOrderControllerIT {
         String putStr = "{\"id\": \"100\",\"description\":\"SalesOrder Updated\", \"date\":" + "\"" + todayStr + "\",\"total\": \"10.00\" }";
 
         given().contentType(ContentType.JSON).body(putStr).
-                when().put("http://localhost:8080/RestSpringMvcDataApp/salesorders").
+                when().put(URL_PREFIX).
                 then().statusCode(200);
     }
 
@@ -119,7 +106,7 @@ public class SalesOrderControllerIT {
     public void testDeleteSalesOrderWithNonExistingId() throws Exception {
 
         when().
-                delete("http://localhost:8080/RestSpringMvcDataApp/salesorders/1000").
+                delete(URL_PREFIX +  "1000").
                 then().statusCode(404).
                 contentType(ContentType.JSON);
     }
@@ -128,7 +115,7 @@ public class SalesOrderControllerIT {
     public void testDeleteSalesOrderWithInvalidId() throws Exception {
 
         when().
-                delete("http://localhost:8080/RestSpringMvcDataApp/salesorders/aaaa").
+                delete(URL_PREFIX + "aaaa").
                 then().statusCode(404).
                 contentType(ContentType.JSON);
     }
