@@ -28,7 +28,7 @@ public class SalesOrder implements Serializable {
     private String description;
 
     @Column(name = "date")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss z")
     private Date date;
 
     @Column(name = "amount")

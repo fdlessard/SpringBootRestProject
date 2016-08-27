@@ -12,13 +12,22 @@ Run the tests:
 $ mvn test
 
 
-Start the tomcat application server:
-===
+Start the application server:
+=============================
 
-
+mvn spring-boot:run
 
 
 Url of the Application:
-===
+=======================
+
+http://localhost:8080/RestSpringBootApp/salesorders/
+
+
+H2 database URL:
+================
+
+http://localhost:8080/h2-console/
+
 
 

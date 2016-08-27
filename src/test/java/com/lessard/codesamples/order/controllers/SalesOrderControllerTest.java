@@ -56,6 +56,9 @@ public class SalesOrderControllerTest {
         salesOrderList.add(new SalesOrder(2l, 0l, "SalesOrder 2", today, new BigDecimal(10.00)));
 
         Mockito.when(salesOrderService.getAllSalesOrder()).thenReturn(salesOrderList);
+
+
+
     }
 
     @Test

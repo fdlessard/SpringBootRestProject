@@ -4,6 +4,11 @@ package com.lessard.codesamples.order.controllers;
 import io.restassured.http.ContentType;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -16,22 +21,33 @@ import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 
-
+@RunWith(SpringRunner.class)
+@TestPropertySource(locations = "classpath:integration_test.properties")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class SalesOrderControllerIT {
 
-    public static final String URL_PREFIX = "http://localhost:8080/RestSpringBootApp/salesorders/";
+    @Value("${server.port}")
+    private String port;
+
+    private String url;
 
     private Date today = Calendar.getInstance().getTime();
 
     @Before
     public void setup() {
+        url = "http://localhost:" + port + "/RestSpringBootApp/salesorders/";
     }
 
     @Test
     public void testGetSalesOrder() throws Exception {
         when().
-                get(URL_PREFIX + "100").
-                then().statusCode(200).body("id", equalTo(100)).
+                get(url + "100").
+                then().statusCode(200).
+                body("id", equalTo(100)).
+                body("version", equalTo(1)).
+                body("description", equalTo("SalesOrder 100 Int")).
+                body("date", equalTo("01-08-2016 12:00:00 UTC")).
+                body("total", equalTo("10.00")).
                 contentType(ContentType.JSON);
     }
 
@@ -39,7 +55,7 @@ public class SalesOrderControllerIT {
     public void testGetSalesOrderWithNonExistingId() throws Exception {
 
         when().
-                get(URL_PREFIX + "1000").
+                get(url + "1000").
                 then().statusCode(404).
                 contentType(ContentType.JSON);
     }
@@ -48,7 +64,7 @@ public class SalesOrderControllerIT {
     public void testGetSalesOrderWithInvalidId() throws Exception {
 
         when().
-                get(URL_PREFIX + "aaaa").
+                get(url + "aaaa").
                 then().statusCode(404).
                 contentType(ContentType.JSON);
     }
@@ -57,7 +73,7 @@ public class SalesOrderControllerIT {
     public void testGetAllSalesOrder() throws Exception {
 
         when().
-                get(URL_PREFIX).
+                get(url).
                 then().statusCode(200).body("id", hasItems(100, 200, 300)).
                 contentType(ContentType.JSON);
     }
@@ -70,8 +86,8 @@ public class SalesOrderControllerIT {
 
         String postStr = "{\"description\":\"SalesOrder IT\", \"date\": " + "\"" + todayStr + "\",\"total\": \"10.00\" }";
 
-        given().contentType(ContentType.JSON).body(postStr ).
-            when().post(URL_PREFIX).
+        given().contentType(ContentType.JSON).body(postStr).
+                when().post(url).
                 then().statusCode(201);
     }
 
@@ -83,8 +99,8 @@ public class SalesOrderControllerIT {
 
         String postStr = "{\"id\" : \"100\", \"description\":\"SalesOrder IT\", \"date\": " + "\"" + todayStr + "\",\"total\": \"10.00\" }";
 
-        given().contentType(ContentType.JSON).body(postStr ).
-                when().post(URL_PREFIX).
+        given().contentType(ContentType.JSON).body(postStr).
+                when().post(url).
                 then().statusCode(201);
     }
 
@@ -97,7 +113,7 @@ public class SalesOrderControllerIT {
         String putStr = "{\"id\": \"100\",\"description\":\"SalesOrder Updated\", \"date\":" + "\"" + todayStr + "\",\"total\": \"10.00\" }";
 
         given().contentType(ContentType.JSON).body(putStr).
-                when().put(URL_PREFIX).
+                when().put(url).
                 then().statusCode(200);
     }
 
@@ -106,7 +122,7 @@ public class SalesOrderControllerIT {
     public void testDeleteSalesOrderWithNonExistingId() throws Exception {
 
         when().
-                delete(URL_PREFIX +  "1000").
+                delete(url + "1000").
                 then().statusCode(404).
                 contentType(ContentType.JSON);
     }
@@ -115,7 +131,7 @@ public class SalesOrderControllerIT {
     public void testDeleteSalesOrderWithInvalidId() throws Exception {
 
         when().
-                delete(URL_PREFIX + "aaaa").
+                delete(url + "aaaa").
                 then().statusCode(404).
                 contentType(ContentType.JSON);
     }

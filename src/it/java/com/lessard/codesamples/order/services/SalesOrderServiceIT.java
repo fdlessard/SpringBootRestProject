@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,10 +20,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-@Ignore
-@Transactional
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = RestSpringBootApplication.class)
+@TestPropertySource(locations = "classpath:integration_test.properties")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class SalesOrderServiceIT {
 
     @Autowired
@@ -52,8 +52,8 @@ public class SalesOrderServiceIT {
         Assert.assertNotNull(salesOrder);
         Assert.assertEquals(Long.valueOf(100), salesOrder.getId());
         Assert.assertEquals(Long.valueOf(1), salesOrder.getVersion());
-        Assert.assertEquals("SalesOrder 0", salesOrder.getDescription());
-        //Assert. "2016-08-01 12:00:00",  salesOrder.getDate());
+        Assert.assertEquals("SalesOrder 100 Int", salesOrder.getDescription());
+        Assert.assertEquals( "2016-08-01 12:00:00.0",  salesOrder.getDate());
         Assert.assertEquals(new BigDecimal(10.00), salesOrder.getTotal());
     }
 
