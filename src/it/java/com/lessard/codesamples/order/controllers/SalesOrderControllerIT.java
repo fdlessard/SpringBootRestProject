@@ -26,6 +26,8 @@ import static org.hamcrest.core.IsEqual.equalTo;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class SalesOrderControllerIT {
 
+    public static final String DATE_FORMAT = "dd-MM-yyyy hh:mm:ss z";
+
     @Value("${server.port}")
     private String port;
 
@@ -40,14 +42,15 @@ public class SalesOrderControllerIT {
 
     @Test
     public void testGetSalesOrder() throws Exception {
+
         when().
                 get(url + "100").
                 then().statusCode(200).
                 body("id", equalTo(100)).
                 body("version", equalTo(1)).
                 body("description", equalTo("SalesOrder 100 Int")).
-                body("date", equalTo("01-08-2016 12:00:00 UTC")).
                 body("total", equalTo("10.00")).
+                body("date", equalTo("01-08-2016 12:00:00 EST")).
                 contentType(ContentType.JSON);
     }
 
@@ -81,7 +84,7 @@ public class SalesOrderControllerIT {
     @Test
     public void testCreateSalesOrder() throws Exception {
 
-        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
         String todayStr = dateFormat.format(today);
 
         String postStr = "{\"description\":\"SalesOrder IT\", \"date\": " + "\"" + todayStr + "\",\"total\": \"10.00\" }";
@@ -94,7 +97,7 @@ public class SalesOrderControllerIT {
     @Test
     public void testCreateSalesOrderWithAlreadyExistingSalesOrder() throws Exception {
 
-        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
         String todayStr = dateFormat.format(today);
 
         String postStr = "{\"id\" : \"100\", \"description\":\"SalesOrder IT\", \"date\": " + "\"" + todayStr + "\",\"total\": \"10.00\" }";
@@ -107,7 +110,7 @@ public class SalesOrderControllerIT {
     @Test
     public void testUpdateSalesOrder() throws Exception {
 
-        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
         String todayStr = dateFormat.format(today);
 
         String putStr = "{\"id\": \"100\",\"description\":\"SalesOrder Updated\", \"date\":" + "\"" + todayStr + "\",\"total\": \"10.00\" }";
@@ -116,7 +119,6 @@ public class SalesOrderControllerIT {
                 when().put(url).
                 then().statusCode(200);
     }
-
 
     @Test
     public void testDeleteSalesOrderWithNonExistingId() throws Exception {

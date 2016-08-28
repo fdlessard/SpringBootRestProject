@@ -1,3 +1,3 @@
-INSERT INTO sales_order(id, version, description, date, amount)  VALUES (100, 1, 'SalesOrder 100 Int', parsedatetime('01-08-2016 12:00:00 UTC', 'dd-MM-yyyy hh:mm:ss z'), 10.00);
-INSERT INTO sales_order(id, version, description, date, amount)  VALUES (200, 1, 'SalesOrder 200 Int', parsedatetime('01-08-2016 12:00:00 UTC', 'dd-MM-yyyy hh:mm:ss z'), 10.00);
-INSERT INTO sales_order(id, version, description, date, amount)  VALUES (300, 1, 'SalesOrder 300 Int', parsedatetime('01-08-2016 12:00:00 UTC', 'dd-MM-yyyy hh:mm:ss z'), 10.00);
+INSERT INTO sales_order(id, version, description, date, amount)  VALUES (100, 1, 'SalesOrder 100 Int', parsedatetime('01-08-2016 12:00:00 EST', 'dd-MM-yyyy hh:mm:ss z'), 10.00);
+INSERT INTO sales_order(id, version, description, date, amount)  VALUES (200, 1, 'SalesOrder 200 Int', parsedatetime('01-08-2016 12:00:00 EST', 'dd-MM-yyyy hh:mm:ss z'), 10.00);
+INSERT INTO sales_order(id, version, description, date, amount)  VALUES (300, 1, 'SalesOrder 300 Int', parsedatetime('01-08-2016 12:00:00 EST', 'dd-MM-yyyy hh:mm:ss z'), 10.00);

@@ -2,6 +2,8 @@ package com.lessard.codesamples.order.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.lessard.codesamples.utils.PriceJsonSerializer;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -32,8 +34,8 @@ public class SalesOrder implements Serializable {
     private Date date;
 
     @Column(name = "amount")
+    @JsonSerialize(using=PriceJsonSerializer.class)
     private BigDecimal total;
-
 
     public SalesOrder() {
     }
