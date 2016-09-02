@@ -2,6 +2,7 @@ package com.lessard.codesamples.order.controllers;
 
 
 import io.restassured.http.ContentType;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +20,6 @@ import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.core.IsEqual.equalTo;
-
 
 @RunWith(SpringRunner.class)
 @TestPropertySource(locations = "classpath:integration_test.properties")
@@ -40,6 +40,10 @@ public class SalesOrderControllerIT {
         url = "http://localhost:" + port + "/RestSpringBootApp/salesorders/";
     }
 
+    @After
+    public void tearDown() {
+    }
+
     @Test
     public void testGetSalesOrder() throws Exception {
 
@@ -50,11 +54,11 @@ public class SalesOrderControllerIT {
                 body("version", equalTo(1)).
                 body("description", equalTo("SalesOrder 100 Int")).
                 body("total", equalTo("10.00")).
-                body("date", equalTo("01-08-2016 12:00:00 EST")).
+                body("date", equalTo("01-08-2017 12:00:00 EST")).
                 contentType(ContentType.JSON);
     }
 
-    @Test
+   @Test
     public void testGetSalesOrderWithNonExistingId() throws Exception {
 
         when().
@@ -95,6 +99,19 @@ public class SalesOrderControllerIT {
     }
 
     @Test
+    public void testCreateSalesOrderWithInvalidAmount() throws Exception {
+
+        DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+        String todayStr = dateFormat.format(today);
+
+        String postStr = "{\"description\":\"SalesOrder IT\", \"date\": " + "\"" + todayStr + "\",\"total\": \"-10.00\" }";
+
+        given().contentType(ContentType.JSON).body(postStr).
+                when().post(url).
+                then().statusCode(400);
+    }
+    
+    @Test
     public void testCreateSalesOrderWithAlreadyExistingSalesOrder() throws Exception {
 
         DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
@@ -129,7 +146,7 @@ public class SalesOrderControllerIT {
                 contentType(ContentType.JSON);
     }
 
-    @Test
+    //@Test
     public void testDeleteSalesOrderWithInvalidId() throws Exception {
 
         when().

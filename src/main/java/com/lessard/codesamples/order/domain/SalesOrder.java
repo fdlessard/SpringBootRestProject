@@ -9,6 +9,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -35,9 +37,12 @@ public class SalesOrder implements Serializable {
 
     @Column(name = "amount")
     @JsonSerialize(using=PriceJsonSerializer.class)
+    @DecimalMin(value = "0.00", message = "Total cannot be less than 0.00")
     private BigDecimal total;
 
-    public SalesOrder() {
+    @SuppressWarnings("unused")
+    private SalesOrder() {
+        // Needed for JPA
     }
 
     public SalesOrder(Long id, Long version, String description, Date date, BigDecimal total) {
@@ -102,9 +107,13 @@ public class SalesOrder implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
+        if (this == o) {
+            return true;
+        }
 
-        if (!(o instanceof SalesOrder)) return false;
+        if (!(o instanceof SalesOrder)) {
+            return false;
+        }
 
         SalesOrder that = (SalesOrder) o;
 

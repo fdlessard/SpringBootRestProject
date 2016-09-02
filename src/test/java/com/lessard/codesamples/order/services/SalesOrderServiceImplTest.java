@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -25,12 +26,12 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class SalesOrderServiceImplTest {
 
+    private Date today = Calendar.getInstance().getTime();
+
     @Mock
     private SalesOrderRepository salesOrderRepository;
 
-    private Date today = Calendar.getInstance().getTime();
-
-
+    @InjectMocks
     private SalesOrderServiceImpl salesOrderService;
 
     @Before
@@ -38,7 +39,7 @@ public class SalesOrderServiceImplTest {
 
         MockitoAnnotations.initMocks(this);
 
-        salesOrderService = new SalesOrderServiceImpl(salesOrderRepository);
+        //salesOrderService = new SalesOrderServiceImpl(salesOrderRepository);
 
         Mockito.when(salesOrderRepository.findOne(0l)).
                 thenReturn(new SalesOrder(0l, 0l, "SalesOrder 0", today, new BigDecimal(10.00)));
@@ -78,7 +79,7 @@ public class SalesOrderServiceImplTest {
     @Test
     public void testDeleteSalesOrder() throws Exception {
 
-        salesOrderService.deleteSalesOrder(Long.valueOf(0));
+        salesOrderService.deleteSalesOrder(0);
         verify(salesOrderRepository).delete(Long.valueOf(0));
     }
 

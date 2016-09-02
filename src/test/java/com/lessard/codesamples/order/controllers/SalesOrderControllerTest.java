@@ -56,18 +56,7 @@ public class SalesOrderControllerTest {
         salesOrderList.add(new SalesOrder(2l, 0l, "SalesOrder 2", today, new BigDecimal(10.00)));
 
         Mockito.when(salesOrderService.getAllSalesOrder()).thenReturn(salesOrderList);
-
-
-
     }
-
-    @Test
-    public void testHello() throws Exception {
-
-        mockMvc.perform(get("/hello")).andExpect(status().isOk())
-                .andExpect(content().string("Hello World"));
-    }
-
 
     @Test
     public void testGetSalesOrder() throws Exception {

@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -22,18 +23,11 @@ public class SalesOrderServiceImpl implements SalesOrderService {
     private static final Logger LOGGER = LoggerFactory.getLogger(SalesOrderServiceImpl.class);
 
     @Resource
+    @Autowired
     private SalesOrderRepository salesOrderRepository;
 
-
-    public SalesOrderServiceImpl() {
-    }
-
-    @Autowired
-    public SalesOrderServiceImpl(SalesOrderRepository salesOrderRepository) {
-        this.salesOrderRepository = salesOrderRepository;
-    }
-
     @Override
+    @Transactional
     public void createSalesOrder(SalesOrder salesOrder) {
 
         if (salesOrder == null) {
@@ -44,36 +38,27 @@ public class SalesOrderServiceImpl implements SalesOrderService {
     }
 
     @Override
-    public SalesOrder getSalesOrder(Long id) {
+    public SalesOrder getSalesOrder(long id) {
 
-        if (id == null) {
-            throw new IllegalArgumentException(NULL_ID_MSG);
-        }
+        return  salesOrderRepository.findOne(id);
 
-        SalesOrder salesOrder = salesOrderRepository.findOne(id);
-
-        return salesOrder;
     }
 
     @Override
     public Iterable<SalesOrder> getAllSalesOrder() {
 
-        Iterable<SalesOrder> salesOrders = salesOrderRepository.findAll();
-
-        return salesOrders;
+        return salesOrderRepository.findAll();
     }
 
     @Override
-    public void deleteSalesOrder(Long id) {
-
-        if (id == null) {
-            throw new IllegalArgumentException(NULL_ID_MSG);
-        }
+    @Transactional
+    public void deleteSalesOrder(long id) {
 
         salesOrderRepository.delete(id);
     }
 
     @Override
+    @Transactional
     public SalesOrder updateSalesOrder(SalesOrder salesOrder) {
 
         if (salesOrder == null) {
@@ -83,5 +68,4 @@ public class SalesOrderServiceImpl implements SalesOrderService {
 
         return salesOrderRepository.save(salesOrder);
     }
-
 }

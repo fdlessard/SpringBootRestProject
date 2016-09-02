@@ -9,11 +9,11 @@ public interface SalesOrderService {
 
     void createSalesOrder(SalesOrder salesOrder);
 
-    SalesOrder getSalesOrder(Long id);
+    SalesOrder getSalesOrder(long id);
 
     Iterable<SalesOrder> getAllSalesOrder();
 
-    void deleteSalesOrder(Long id);
+    void deleteSalesOrder(long id);
 
     SalesOrder updateSalesOrder(SalesOrder salesOrder);
 }

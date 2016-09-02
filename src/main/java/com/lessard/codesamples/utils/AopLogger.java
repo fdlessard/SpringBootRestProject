@@ -30,7 +30,7 @@ public class AopLogger {
 
         stopWatch.stop();
 
-        StringBuffer logMessage = new StringBuffer();
+        StringBuilder logMessage = new StringBuilder();
         logMessage.append(joinPoint.getTarget().getClass().getSimpleName());
         logMessage.append(".");
         logMessage.append(joinPoint.getSignature().getName());
