@@ -37,7 +37,7 @@ public class SalesOrder implements Serializable {
 
     @Column(name = "amount")
     @JsonSerialize(using=PriceJsonSerializer.class)
-    @DecimalMin(value = "0.00", message = "Total cannot be less than 0.00")
+    @DecimalMin(value = "0.00", message = "{salesorder.amount}")
     private BigDecimal total;
 
     @SuppressWarnings("unused")

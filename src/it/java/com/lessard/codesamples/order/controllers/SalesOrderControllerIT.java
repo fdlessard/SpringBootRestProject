@@ -110,7 +110,7 @@ public class SalesOrderControllerIT {
                 when().post(url).
                 then().statusCode(400);
     }
-    
+
     @Test
     public void testCreateSalesOrderWithAlreadyExistingSalesOrder() throws Exception {
 
