@@ -5,7 +5,7 @@ package com.lessard.codesamples.order.controllers;
  */
 public class OrderNotFoundException extends RuntimeException {
 
-    private final Long orderId;
+    private final long orderId;
 
     public OrderNotFoundException(Long orderId) {
         this.orderId = orderId;

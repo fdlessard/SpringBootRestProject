@@ -2,13 +2,12 @@ package com.lessard.codesamples.order.controllers;
 
 import com.lessard.codesamples.order.domain.SalesOrder;
 import com.lessard.codesamples.order.services.SalesOrderService;
-import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.HandlerAdapter;
 
 import javax.validation.ConstraintViolationException;
 import java.util.*;
@@ -49,7 +48,6 @@ public class SalesOrderController {
         return mapList;
 
     }
-
 
 
     @RequestMapping(value = "/salesorders", method = RequestMethod.POST, produces = "application/json")
@@ -100,35 +98,42 @@ public class SalesOrderController {
     // Exception handlers
 
     @ExceptionHandler(OrderNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    public String orderNotFound(OrderNotFoundException e) {
-        Long orderId = e.getOrderId();
-        return "Order " + orderId + " not found !";
+    public ResponseEntity<SalesOrderError>  orderNotFound(OrderNotFoundException e) {
+
+        long orderId = e.getOrderId();
+
+        SalesOrderError error = new SalesOrderError("100", "Order " + orderId + " not found !");
+
+        return new ResponseEntity<SalesOrderError>(error, HttpStatus.NOT_FOUND) ;
     }
 
     @ExceptionHandler(NumberFormatException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    public String orderNotFound(NumberFormatException e) {
-        return "Order not found !";
+    public ResponseEntity<SalesOrderError> orderNotFound(NumberFormatException e) {
+
+        SalesOrderError error = new SalesOrderError("100","Order not found !" );
+
+        return new ResponseEntity<SalesOrderError>(error, HttpStatus.NOT_FOUND) ;
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public String orderAmountIsInvalid(ConstraintViolationException e) {
-        return "Order amount is invalid !";
-    }
+    public ResponseEntity<SalesOrderError>  orderAmountIsInvalid(ConstraintViolationException e) {
 
+        SalesOrderError error = new SalesOrderError("100", "Order amount is invalid !");
+
+        return new ResponseEntity<SalesOrderError>(error, HttpStatus.BAD_REQUEST) ;
+    }
 
     @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    public String orderAlreadyExist(Exception e) {
-        return "Order already exist !";
-    }
+    public ResponseEntity<SalesOrderError> orderAlreadyExist(Exception e) {
 
+        SalesOrderError error = new SalesOrderError("100", "Order already exist !");
+
+        return new ResponseEntity<SalesOrderError>(error, HttpStatus.NOT_FOUND) ;
+    }
 
 
 }
