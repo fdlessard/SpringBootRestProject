@@ -13,10 +13,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.lessard.codesamples</groupId>
-    <artifactId>restspringbootproject</artifactId>
-    <name>RestSpringBootProject</name>
-    <description>REST project using Spring Boot</description>
+    <groupId>io.lessard.codebites</groupId>
+    <artifactId>springbootrestproject</artifactId>
+    <name>SpringBootRestProject</name>
+    <description>Spring Boot REST project</description>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <developers>
@@ -117,6 +117,11 @@
             <artifactId>json-schema-validator</artifactId>
             <version>${rest-assured.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sap.cloud.yaas.service-sdk</groupId>
+            <artifactId>service-sdk-authorization</artifactId>
+            <version>4.11.2</version>
         </dependency>
 
     </dependencies>
